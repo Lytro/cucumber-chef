@@ -29,4 +29,12 @@ SimpleCov.start do
   add_filter '/spec/'
 end if ENV["COVERAGE"]
 
+FileUtils.mkdir_p "tmp/rspec"
+
+RSpec.configure do |config|
+  config.after(:each) do
+    FileUtils.rm_rf Dir.glob("tmp/rspec/*")
+  end
+end
+
 ################################################################################

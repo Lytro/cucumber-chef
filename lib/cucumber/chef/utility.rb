@@ -139,6 +139,7 @@ module Cucumber
       def knife_rb
         knife_rb = File.join(Cucumber::Chef.home_dir, Cucumber::Chef::Config.provider.to_s, "knife.rb")
         FileUtils.mkdir_p(File.dirname(knife_rb))
+        FileUtils.touch(knife_rb) unless File.exists? knife_rb
         knife_rb
       end
 
