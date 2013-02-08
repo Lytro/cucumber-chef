@@ -130,6 +130,7 @@ class CucumberChef < Thor
   desc "setup", "Setup cucumber-chef test lab in Amazon EC2"
   method_option :test, :type => :boolean, :desc => "INTERNAL USE ONLY"
   def setup
+    Cucumber::Chef.init_knife_rb
     boot
 
     if (test_lab = Cucumber::Chef::TestLab.new)

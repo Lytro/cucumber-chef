@@ -137,10 +137,7 @@ module Cucumber
 ################################################################################
 
       def knife_rb
-        knife_rb = File.join(Cucumber::Chef.home_dir, Cucumber::Chef::Config.provider.to_s, "knife.rb")
-        FileUtils.mkdir_p(File.dirname(knife_rb))
-        FileUtils.touch(knife_rb) unless File.exists? knife_rb
-        knife_rb
+        File.join(Cucumber::Chef.home_dir, Cucumber::Chef::Config.provider.to_s, 'knife.rb')
       end
 
 ################################################################################
@@ -259,6 +256,27 @@ module Cucumber
         else
           logger.info { "load_chef_config(#{Cucumber::Chef.knife_rb})" }
           ::Chef::Config.from_file(Cucumber::Chef.knife_rb)
+        end
+      end
+
+################################################################################
+# Init knife.rb
+################################################################################
+
+      def init_knife_rb
+        unless File.exists? knife_rb
+          FileUtils.mkdir_p(File.dirname(knife_rb))
+
+          template_file = File.join(Cucumber::Chef.root_dir, "lib", "cucumber", "chef", "templates", "cucumber-chef", "knife-rb.erb")
+
+          context = {
+            :librarian_chef => Cucumber::Chef::Config.librarian_chef,
+            :user => Cucumber::Chef::Config.user
+          }
+
+          File.open(knife_rb, 'a') do |f|
+            f.puts(ZTK::Template.render(template_file, context))
+          end
         end
       end
 
