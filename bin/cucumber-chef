@@ -10,7 +10,7 @@ class CucumberChef < Thor
 
   no_tasks do
 
-    def initalize_config
+    def initialize_config
       source_dir = File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "cucumber", "chef", "templates", "cucumber-chef"))
       destination_dir = File.expand_path(File.join(Cucumber::Chef.locate_parent(".chef"), ".cucumber-chef"))
       FileUtils.mkdir_p(destination_dir)
@@ -118,9 +118,9 @@ class CucumberChef < Thor
 
 ################################################################################
 
-  desc "init", "Initalize cucumber-chef configuration"
+  desc "init", "Initialize cucumber-chef configuration"
   def init
-    initalize_config
+    initialize_config
   end
 
 ################################################################################
@@ -133,7 +133,7 @@ class CucumberChef < Thor
     boot
 
     if (test_lab = Cucumber::Chef::TestLab.new)
-      if (provider = test_lab.create)
+      if test_lab.create
         if (provisioner = Cucumber::Chef::Provisioner.new(test_lab))
 
           provisioner.build
